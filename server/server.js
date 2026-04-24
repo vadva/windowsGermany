@@ -42,9 +42,9 @@ let envKeyDiagnostics = []
 
 // ------------------------------------------------------
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
 
 function normalizeEnvKey(raw) {
   // Handle common Cyrillic confusables that look like Latin in editors:
@@ -312,6 +312,15 @@ app.post('/api/contact', async (req, res) => {
     res.status(500).json({ ok: false, error: 'send_failed' })
   }
 })
+// -------------------------
+const __dirname = new URL('.', import.meta.url).pathname;
+
+app.use(express.static(path.join(__dirname, "../dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
+});
+// -------------------------------
 
 app.listen(port, () => {
   console.log(`[mail-server] listening on http://localhost:${port}`)
