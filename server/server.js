@@ -6,11 +6,14 @@ import { fileURLToPath } from 'node:url'
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 import fsSync from 'node:fs'
+import cors from "cors";
 
 const app = express()
 
+
 app.use(express.json({ limit: '100kb' }))
 
+app.use(cors());
 // Load .env (robust to different working directories; Windows users sometimes save it as UTF-16)
 const serverDir = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(serverDir, '..')
@@ -22,6 +25,26 @@ let loadedEnvFrom = null
 let parsedEnvKeys = []
 let envTailKeys = []
 let envKeyDiagnostics = []
+
+// ----------------------------------------------------------
+
+// const PORT = process.env.PORT || 3000;
+
+// import path from "path";
+
+// const __dirname = new URL('.', import.meta.url).pathname;
+
+// app.use(express.static(path.join(__dirname, "../dist")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../dist/index.html"));
+// });
+
+// ------------------------------------------------------
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 function normalizeEnvKey(raw) {
   // Handle common Cyrillic confusables that look like Latin in editors:
